@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/kailash1306/agile-assessment.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'python3 -m py_compile app.py'
+                sleep 15
+                milestone 1
+            }
+        }
+
+        stage('Send Notification') {
+            steps {
+                echo "Notification: to=kailash.t2024@vitstudent.ac.in, subject=${JOB_NAME} #${BUILD_NUMBER} passed, body=Build URL: ${BUILD_URL}"
+            }
+        }
+    }
+}
